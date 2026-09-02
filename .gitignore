@@ -42,3 +42,7 @@ next-env.d.ts
 
 # drizzle
 /drizzle
+
+# cloudflare / opennext
+/.open-next/
+.wrangler/
