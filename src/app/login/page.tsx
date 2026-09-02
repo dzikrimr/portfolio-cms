@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { PasswordInput } from "@/components/ui/PasswordInput";
 import { login } from "./actions";
 
 const initialState = { error: "" };
@@ -35,13 +36,7 @@ export default function LoginPage() {
             <label htmlFor="password" className="block text-sm font-medium text-foreground mb-1">
               Password
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="w-full border border-border rounded-md px-3 py-2 text-sm bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-foreground/20"
-            />
+            <PasswordInput id="password" name="password" required />
           </div>
 
           {state?.error && (
