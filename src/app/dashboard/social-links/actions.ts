@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { revalidatePortfolio, PORTFOLIO_PATHS } from '@/lib/revalidate-portfolio';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '@/db';
@@ -29,5 +30,6 @@ export async function updateSocialLinks(_: unknown, formData: FormData) {
     .where(eq(siteSettings.id, 1));
 
   revalidatePath('/dashboard/social-links');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home, PORTFOLIO_PATHS.privateRepo]);
   return { success: true };
 }

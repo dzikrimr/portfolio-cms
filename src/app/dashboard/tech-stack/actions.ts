@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { revalidatePortfolio, PORTFOLIO_PATHS } from '@/lib/revalidate-portfolio';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '@/db';
@@ -31,6 +32,7 @@ export async function createTechStack(_: unknown, formData: FormData) {
   await db.insert(techStacks).values({ ...parsed.data, sortOrder: existing.length });
 
   revalidatePath('/dashboard/tech-stack');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
   return { success: true };
 }
 
@@ -47,10 +49,12 @@ export async function updateTechStack(id: number, _: unknown, formData: FormData
   await db.update(techStacks).set(parsed.data).where(eq(techStacks.id, id));
 
   revalidatePath('/dashboard/tech-stack');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
   return { success: true };
 }
 
 export async function deleteTechStack(id: number) {
   await db.delete(techStacks).where(eq(techStacks.id, id));
   revalidatePath('/dashboard/tech-stack');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
 }

@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { revalidatePortfolio, PORTFOLIO_PATHS } from '@/lib/revalidate-portfolio';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '@/db';
@@ -35,6 +36,7 @@ export async function updateHeroSettings(_: unknown, formData: FormData) {
     .where(eq(siteSettings.id, 1));
 
   revalidatePath('/dashboard/hero');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
   return { success: true };
 }
 
@@ -59,6 +61,7 @@ export async function createHeroStat(_: unknown, formData: FormData) {
   await db.insert(heroStats).values({ ...parsed.data, sortOrder: existing.length });
 
   revalidatePath('/dashboard/hero');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
   return { success: true };
 }
 
@@ -76,10 +79,12 @@ export async function updateHeroStat(id: number, _: unknown, formData: FormData)
   await db.update(heroStats).set(parsed.data).where(eq(heroStats.id, id));
 
   revalidatePath('/dashboard/hero');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
   return { success: true };
 }
 
 export async function deleteHeroStat(id: number) {
   await db.delete(heroStats).where(eq(heroStats.id, id));
   revalidatePath('/dashboard/hero');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
 }

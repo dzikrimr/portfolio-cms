@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { revalidatePortfolio, PORTFOLIO_PATHS } from '@/lib/revalidate-portfolio';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '@/db';
@@ -27,5 +28,9 @@ export async function updateLegalPage(slug: string, _: unknown, formData: FormDa
     .where(eq(legalPages.slug, slug));
 
   revalidatePath(`/dashboard/legal/${slug}`);
+
+  const portfolioPath = slug === 'privacy' ? PORTFOLIO_PATHS.privacy : PORTFOLIO_PATHS.terms;
+  await revalidatePortfolio([portfolioPath]);
+
   return { success: true };
 }

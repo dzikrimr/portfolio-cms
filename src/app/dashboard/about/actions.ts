@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { revalidatePortfolio, PORTFOLIO_PATHS } from '@/lib/revalidate-portfolio';
 import { eq } from 'drizzle-orm';
 import { z } from 'zod';
 import { db } from '@/db';
@@ -27,6 +28,7 @@ export async function createAboutSkill(_: unknown, formData: FormData) {
   await db.insert(aboutSkills).values({ ...parsed.data, sortOrder: existing.length });
 
   revalidatePath('/dashboard/about');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
   return { success: true };
 }
 
@@ -44,10 +46,12 @@ export async function updateAboutSkill(id: number, _: unknown, formData: FormDat
   await db.update(aboutSkills).set(parsed.data).where(eq(aboutSkills.id, id));
 
   revalidatePath('/dashboard/about');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
   return { success: true };
 }
 
 export async function deleteAboutSkill(id: number) {
   await db.delete(aboutSkills).where(eq(aboutSkills.id, id));
   revalidatePath('/dashboard/about');
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
 }
