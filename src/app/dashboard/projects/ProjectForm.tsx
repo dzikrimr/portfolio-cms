@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
+import { ImageListInput } from "@/components/ui/ImageListInput";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { PreviewFrame } from "@/components/preview/PreviewFrame";
@@ -28,6 +29,7 @@ export function ProjectForm({ action, project, onSuccess }: ProjectFormProps) {
     tags: project?.tags ?? [],
     link: project?.link ?? "",
   });
+  const [imagesText, setImagesText] = useState(project?.images?.join("\n") ?? "");
 
   useEffect(() => {
     if (state?.success) onSuccess?.();
@@ -85,12 +87,15 @@ export function ProjectForm({ action, project, onSuccess }: ProjectFormProps) {
             <label className="block text-xs text-muted-foreground mb-1">
               URL gambar (satu per baris)
             </label>
-            <Textarea
+            <ImageListInput
               name="images"
-              defaultValue={project?.images?.join("\n")}
-              onChange={(e) => setPreview((p) => ({ ...p, images: linesToArray(e.target.value) }))}
+              value={imagesText}
+              onValueChange={(text) => {
+                setImagesText(text);
+                setPreview((p) => ({ ...p, images: linesToArray(text) }));
+              }}
               rows={3}
-              placeholder="https://..."
+              placeholder="https://... atau upload"
             />
           </div>
 

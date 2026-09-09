@@ -1,8 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { updateHeroSettings } from "./actions";
 import { Input } from "@/components/ui/Input";
+import { ImageInput } from "@/components/ui/ImageInput";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import type { SiteSettings } from "@/db/schema";
@@ -19,6 +20,7 @@ interface HeroSettingsFormProps {
 
 export function HeroSettingsForm({ settings, onFieldChange }: HeroSettingsFormProps) {
   const [state, formAction, isPending] = useActionState(updateHeroSettings, initialState);
+  const [portraitImage, setPortraitImage] = useState(settings.portraitImage);
 
   return (
     <form action={formAction} className="border border-border rounded-lg p-4 space-y-4">
@@ -79,11 +81,14 @@ export function HeroSettingsForm({ settings, onFieldChange }: HeroSettingsFormPr
         <label className="block text-xs text-muted-foreground mb-1">
           URL foto potret (kosongkan untuk pakai foto default)
         </label>
-        <Input
+        <ImageInput
           name="portraitImage"
-          defaultValue={settings.portraitImage}
-          onChange={(e) => onFieldChange("portraitImage", e.target.value)}
-          placeholder="https://..."
+          value={portraitImage}
+          onValueChange={(url) => {
+            setPortraitImage(url);
+            onFieldChange("portraitImage", url);
+          }}
+          placeholder="https://... atau upload"
         />
       </div>
 

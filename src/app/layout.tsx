@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { uploadRouter } from "./api/uploadthing/core";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -38,6 +41,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
+        <NextSSRPlugin routerConfig={extractRouterConfig(uploadRouter)} />
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           {children}
         </ThemeProvider>

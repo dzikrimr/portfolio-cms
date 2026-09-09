@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
+import { ImageInput } from "@/components/ui/ImageInput";
 import { Textarea } from "@/components/ui/Textarea";
 import { Select } from "@/components/ui/Select";
 import { Button } from "@/components/ui/Button";
@@ -100,11 +101,11 @@ export function AchievementForm({ action, achievement, onSuccess }: AchievementF
           </div>
           <div>
             <label className="block text-xs text-muted-foreground mb-1">URL gambar</label>
-            <Input
+            <ImageInput
               name="image"
-              defaultValue={achievement?.image}
-              placeholder="https://..."
-              onChange={(e) => setPreview((p) => ({ ...p, image: e.target.value }))}
+              value={preview.image}
+              onValueChange={(url) => setPreview((p) => ({ ...p, image: url }))}
+              placeholder="https://... atau upload"
               required
             />
           </div>

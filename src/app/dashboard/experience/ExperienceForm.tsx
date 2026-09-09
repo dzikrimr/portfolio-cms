@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/Input";
+import { ImageInput } from "@/components/ui/ImageInput";
 import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import { PreviewFrame } from "@/components/preview/PreviewFrame";
@@ -98,11 +99,11 @@ export function ExperienceForm({ action, experience, onSuccess }: ExperienceForm
           </div>
           <div>
             <label className="block text-xs text-muted-foreground mb-1">URL gambar (opsional)</label>
-            <Input
+            <ImageInput
               name="image"
-              defaultValue={experience?.image ?? ""}
-              onChange={(e) => setPreview((p) => ({ ...p, image: e.target.value }))}
-              placeholder="https://..."
+              value={preview.image}
+              onValueChange={(url) => setPreview((p) => ({ ...p, image: url }))}
+              placeholder="https://... atau upload"
             />
           </div>
 
