@@ -2,8 +2,6 @@ import 'server-only';
 
 export const PORTFOLIO_PATHS = {
   home: '/',
-  privacy: '/privacy',
-  terms: '/terms',
   privateRepo: '/private-repo',
 } as const;
 

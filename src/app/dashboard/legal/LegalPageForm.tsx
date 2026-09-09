@@ -2,7 +2,6 @@
 
 import { useActionState } from "react";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
 import { Button } from "@/components/ui/Button";
 import type { LegalPage } from "@/db/schema";
 
@@ -17,17 +16,17 @@ export function LegalPageForm({ action, page }: LegalPageFormProps) {
   const [state, formAction, isPending] = useActionState(action, initialState);
 
   return (
-    <form action={formAction} className="w-full space-y-4">
+    <form action={formAction} className="max-w-lg space-y-4">
       <div>
-        <label className="block text-xs text-muted-foreground mb-1">Judul</label>
+        <label className="block text-xs text-muted-foreground mb-1">Judul (teks tautan di footer)</label>
         <Input name="title" defaultValue={page.title} required />
       </div>
 
       <div>
         <label className="block text-xs text-muted-foreground mb-1">
-          Konten (pisahkan paragraf dengan baris kosong)
+          Link (mis. halaman TermsFeed)
         </label>
-        <Textarea name="content" defaultValue={page.content} rows={12} required />
+        <Input name="url" defaultValue={page.url} placeholder="https://..." required />
       </div>
 
       {state?.error && <p className="text-sm text-red-600">{state.error}</p>}

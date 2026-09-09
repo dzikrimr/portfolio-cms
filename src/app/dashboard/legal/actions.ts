@@ -9,17 +9,17 @@ import { legalPages } from '@/db/schema';
 
 const legalSchema = z.object({
   title: z.string().min(1),
-  content: z.string().min(1),
+  url: z.string().min(1),
 });
 
 export async function updateLegalPage(slug: string, _: unknown, formData: FormData) {
   const parsed = legalSchema.safeParse({
     title: formData.get('title'),
-    content: formData.get('content'),
+    url: formData.get('url'),
   });
 
   if (!parsed.success) {
-    return { error: 'Judul dan konten wajib diisi.' };
+    return { error: 'Judul dan link wajib diisi.' };
   }
 
   await db
@@ -28,9 +28,7 @@ export async function updateLegalPage(slug: string, _: unknown, formData: FormDa
     .where(eq(legalPages.slug, slug));
 
   revalidatePath(`/dashboard/legal/${slug}`);
-
-  const portfolioPath = slug === 'privacy' ? PORTFOLIO_PATHS.privacy : PORTFOLIO_PATHS.terms;
-  await revalidatePortfolio([portfolioPath]);
+  await revalidatePortfolio([PORTFOLIO_PATHS.home]);
 
   return { success: true };
 }
